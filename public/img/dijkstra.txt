@@ -1,0 +1,45 @@
+#include<iostream>
+#include<vector>
+#include <iostream> 
+#include <vector> 
+#include <queue> 
+#define INF 32000
+using namespace std; 
+vector < vector< pair<long long, long long> > > graph; 
+long long n, m, x, y, z; 
+void dijkstra(int s){ 
+    vector<long long> d(n+1, INF);                                      //масив за съхраняване на дължината на мин път от s до вс останали 
+    d[s]=0;                                                             //минималното разстояние до стартовия връх винаги е 0 
+    priority_queue <pair<int, int> > q;                                 //приоритетната ни опашка q, която съхранява върховете с разстоянието до тях. Най-малкото разстояние е най-горе 
+    q.push(make_pair(s, 0));                                            //пускаме стартовия връх, с разстояние 0, за да започне обхождането 
+    while(!q.empty()){                                                  //докато опашката не е празна 
+        pair<int, int> top = q.top();                                   //извличаме нейното начало 
+        q.pop();                                                        //и непосредствено след това го махаме 
+        for(int i=0; i<graph[top.first].size(); i++){                   //обхождаме съседите на текущия връх 
+            int cur_vert=graph[top.first][i].first;                     //извличаме номера на текущия съсед и 
+            int cur_dist = graph[top.first][i].second;                  //извличаме разстоянието до него 
+            if(d[cur_vert]>d[top.first]+cur_dist){                      //ако минималното разстояние до съседа е по-голямо от минималното разстояние до върха, който сме извлекли от върха на опашката + разстоянието от него до съседа, който разглеждаме 
+                d[cur_vert]=d[top.first]+cur_dist;                      //сме намерили нов оптимален път. Запазваме си го 
+                q.push(make_pair(cur_vert, d[top.first]+cur_dist));     // и добавяме в опашката новия връх с новия минимален път до него 
+            } 
+        } 
+    } 
+    if(d[n]==INF) cout<<-1<<endl; 
+    else cout<<d[n]<<endl; 
+}
+
+int main()
+{ 
+    cin>>n>>m;  
+    graph.resize(n+1);  
+    for(int i=0; i<m; i++){ 
+        cin>>x>>y>>z; 
+        graph[x].push_back(make_pair(y, z)); 
+    } 
+    dijkstra(1); 
+    
+    
+    return 0; 
+}
+
+/*Кода е на Пешо... без коментар*/

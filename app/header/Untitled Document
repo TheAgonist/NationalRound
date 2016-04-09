@@ -1,0 +1,75 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Share your music with the world</title>
+
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="app-content/app.css" rel="stylesheet" />
+
+</head>
+<body class="container">
+    <!-- header -->
+    <header >
+        <img src="header/logo.png">
+        <link href="app-content/app.css" rel="stylesheet" />
+        <ul class="nav nav-tabs">
+            <li ng-class="{active: activeTab === 'home'}"><a ui-sref="home">Home</a></li>
+            <li ng-class="{active: activeTab === 'account'}"><a ui-sref="account">Account</a></li>
+            <li ng-class="{active: activeTab === 'play'}"><a ui-sref="play">Play</a></li>
+            <li ng-class="{active: activeTab === 'sheetMusic'}"><a ui-sref="sheetMusic">Sheet Music</a></li>
+            <li ng-class="{active: activeTab === 'upload'}"><a ui-sref="upload">Upload</a></li>
+            <li><a href="/login" target="_self">Logout</a></li>
+        </ul>
+        <div class="flash-message" ng-if="flash">
+            <div class="{{'alert alert-' + flash.type}}" ng-bind="flash.message"></div>
+        </div>
+
+    </header>
+
+    <!-- main -->
+    <main ui-view></main>
+
+    <!-- footer -->
+    <footer class="w3-container w3-padding-32 w3-theme w3-center">
+      <hr>
+      <h4>Follow Us</h4>
+      <a class="w3-btn-floating w3-teal" href="javascript:void(0)" title="Facebook"><i class="fa fa-facebook"></i></a>
+      <a class="w3-btn-floating w3-teal" href="javascript:void(0)" title="Twitter"><i class="fa fa-twitter"></i></a>
+      <a class="w3-btn-floating w3-teal" href="javascript:void(0)" title="Google +"><i class="fa fa-google-plus"></i></a>
+      <a class="w3-btn-floating w3-teal" href="javascript:void(0)" title="Linkedin"><i class="fa fa-linkedin"></i></a>
+      <p>© Copyright whatever</p>           
+
+      <div style="position:relative;bottom:103px;z-index:1;" class="w3-tooltip w3-right">
+        <span class="w3-text w3-padding w3-teal">Go To Top</span>   
+        <a class="w3-btn w3-theme" href="#myPage"><span class="w3-xlarge">
+        <i class="fa fa-chevron-circle-up"></i></span></a>
+      </div>         <         
+    </footer>
+
+    <!--<div ui-view></div>-->
+
+        <!-- external scripts -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>
+    <script src="./vexflow/releases/vexflow-min.js"></script>
+    <script src="./vexflow/src/renderer.js"></script>
+    <script src="./midifile/dist/MIDIFile.js" type="text/javascript"></script>
+
+    <!-- application scripts -->
+    <script src="app.js"></script>
+    <script src="app-services/user.service.js"></script>
+    <script src="app-services/flash.service.js"></script>
+    <script src="app-services/play.service.js"></script>
+    <script src="app-services/sheetMusic.service.js"></script>
+    <script src="app-services/upload.service.js"></script>
+    <script src="home/index.controller.js"></script>
+    <script src="account/index.controller.js"></script>
+    <script src="play/index.controller.js"></script>
+    <script src="sheetMusic/index.controller.js"></script>
+    <script src="uploadFile/index.controller.js"></script>
+</body>
+</html>

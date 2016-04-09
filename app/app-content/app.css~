@@ -1,0 +1,34 @@
+﻿body {
+    padding: 20px;
+}
+
+#upvoteButton{
+	height: 20px;
+	width: 55px;
+	font-size: 10px;
+	text-align: right;
+}
+
+#sheetButton{
+	height: 20px;
+	width: 110px;
+	font-size: 10px;
+	text-align: right;
+}
+
+
+#playButton{
+	height: 20px;
+	width: 55px;
+	font-size: 10px;
+	text-align: right;
+}
+
+#row{
+	padding: 10px;
+	width: 300px;
+}
+
+.flash-message {
+    margin-top: 20px;
+}

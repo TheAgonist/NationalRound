@@ -1,0 +1,5 @@
+﻿{
+    "connectionString": "localhost:27017/musicShare",
+    "apiUrl":  "http://localhost:3000/api",
+    "secret": "uchastie v NOIT"
+}
