@@ -17,15 +17,15 @@ router.get('/:bufferName',getBuffer);
 
 module.exports = router;
 
-function getBuffer(bufferName){
-    console.log("dddddddddddddddddddddddddddddddddddd");
-    spawn.exec("th ./././lstm2/encode.lua -filename ../../../public/img/"+bufferName /*"./././public/img/bufferName "*/, function(error,stdout,stderr){
+function getBuffer(req, res){
+    //console.log("\n"+window.location.pathname+"\n");
+    spawn.exec("th ./././lstm2/encode.lua -filename ./../public/img/"+req.params.bufferName /*"./././public/img/bufferName "*/, function(error,stdout,stderr){
         if (error) {
                     console.log(error.stack);
                     console.log('Error code: '+error.code);
                     console.log('Signal received: '+error.signal);
                  }
-        console.log(stderr+"ff");
+        console.log("\n"+stderr+"\n ff");
     });
 }
 

@@ -13,15 +13,8 @@
         //var request = require('sync-request');
 
         function getBuffer(bufferName){
-            //console.log(bufferName);
-            /*$http.get('/api/sheetMusic/'+bufferName).then(function(song){
-                console.log(song);
-                return song;
-            }).then(handleSuccess,handleError);*/
+            console.log(bufferName);
             return $http.get('/api/sheetMusic/'+bufferName).then(handleSuccess,handleError);
-            //var res = request('GET', '/img/'+bufferName);
-            //console.log(res.getBody());
-            //return contra;
         }
 
         function handleSuccess(res) {  

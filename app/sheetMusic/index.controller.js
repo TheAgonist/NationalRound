@@ -8,25 +8,11 @@
         function initController(){
           console.log('hi');
 
-          var songs = sheetMusicService.getBuffer('f.mid').then(function(response){
-          //fromString(response.data);
-          // var arrayBuffer = new ArrayBuffer(response.data.length, 'base64'); // Start transforming Buffer to ArrayBuffer
-          // var views = new Uint8Array(toArrayBuffer(response.data));
-          // //console.log(decode(response.data));
-          // for(var i = 0; i < response.data.length; ++i) {
-          //     //console.log("ff")
-          //     views[i] = response[i];
-          // }
-
-          //   //console.log(Object.prototype.toString.call(arrayBuffer));
-             //console.log(response.data);
-            //readMidi(response.data);
-
-
-
-
-    });
-  }
+          sheetMusicService.getBuffer('f.mid').then(function(response){
+            console.log("ddd");
+            console.log(response);
+          });
+        }
           function toArrayBuffer(buffer) {
             var ab = new ArrayBuffer(buffer.length);
             var view = new Uint8Array(ab);
