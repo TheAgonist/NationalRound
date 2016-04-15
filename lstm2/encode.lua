@@ -1,5 +1,6 @@
 local json = require 'cjson'
 local MIDI = require 'MIDI'
+local lfs = require 'lfs'
 cmd = torch.CmdLine()
 cmd:option('-filename', 'File to be transformed')
 
@@ -20,7 +21,9 @@ notes[11] = 'g#'
 
 
 opt = cmd:parse(arg)
+
 local data ={}
+--print(lfs.currentdir())
 local f = assert(io.open(opt.filename, "r"))
 local rawdata = MIDI.midi2score(f:read("*all"))
 if rawdata[3]~=nil then indexer = 3 elseif rawdata[2]~=nil then indexer=2 end

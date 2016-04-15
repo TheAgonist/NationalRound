@@ -19,13 +19,13 @@ module.exports = router;
 
 function getBuffer(req, res){
     //console.log("\n"+window.location.pathname+"\n");
-    spawn.exec("th ./././lstm2/encode.lua -filename ./../public/img/"+req.params.bufferName /*"./././public/img/bufferName "*/, function(error,stdout,stderr){
+    spawn.exec("th ./././lstm2/encode.lua -filename public/img/"+req.params.bufferName /*"./././public/img/bufferName "*/, function(error,stdout,stderr){
         if (error) {
                     console.log(error.stack);
                     console.log('Error code: '+error.code);
                     console.log('Signal received: '+error.signal);
                  }
-        console.log("\n"+stderr+"\n ff");
+        res.send(stdout);
     });
 }
 

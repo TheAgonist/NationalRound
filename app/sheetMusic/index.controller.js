@@ -10,7 +10,7 @@
 
           sheetMusicService.getBuffer('f.mid').then(function(response){
             console.log("ddd");
-            console.log(response);
+            //console.log(response);
           });
         }
           function toArrayBuffer(buffer) {
