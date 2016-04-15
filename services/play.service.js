@@ -9,6 +9,8 @@ var _ = require('lodash');
 var service = {};
 service.getAll = getAll;
 service.update = update;
+service.create = createRecord;
+service.getAllRecordsForUser = getAllRecordsForUser;
 module.exports = service;
 
 function getAll(_id){
@@ -26,18 +28,62 @@ function getAll(_id){
     return deferred.promise;
 }
 
-function update(_id, recordParam) {
+function update(req) {
     var deferred = Q.defer();
+    recordParam = req.body;
+    action = req.route.path;
+    console.log(action);
+    if(action == "/delete"){
         var set = {
-            votes: Number(recordParam.votes)+1,
+            delete: ~recordParam.delete,
+        }
+    }
+    if(action == '/:_id'){
+        var set = {
+            votes: recordParam.votes+1,
         };
-        recordsDB.findAndModify(
-            { _id: _id },
-            { $set: set },
-            function (err, doc) {
-                if (err) deferred.reject(err);
-                deferred.resolve();
-            });
+    }
 
+    if(action == "/changeShowStatus"){
+        var set = {
+                show: ~recordParam.show,
+            };
+    }
+    recordsDB.findAndModify(
+        { _id: recordParam._id},
+        { $set: set },
+        function (err, doc) {
+            if (err) deferred.reject(err);
+            deferred.resolve();
+    });
+
+    return deferred.promise;
+}
+
+function createRecord(record) {   
+    var deferred = Q.defer();
+    recordsDB.insert(
+        record,
+        function (err, doc) {
+            if (err) deferred.reject(err);
+            
+            deferred.resolve();
+        });
+
+    return deferred.promise;
+}
+
+function getAllRecordsForUser(user) {
+    //console.log(user+" ffff");
+    var deferred = Q.defer();
+    recordsDB.find({user: user},{sort : { votes : -1 } },function (err, record) {
+    if (err) deferred.reject(err);
+    if (record) {
+        //console.log(record);
+        deferred.resolve(record);
+    } else {
+        deferred.resolve();
+    }
+    });
     return deferred.promise;
 }

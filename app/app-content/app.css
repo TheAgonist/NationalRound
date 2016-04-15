@@ -783,6 +783,13 @@ footer .wrapper .column h4
 	text-align: right;
 }
 
+#delButton{
+    height: 20px;
+    width: 45px;
+    font-size: 10px;
+    text-align: right;
+}
+
 #row{
 	padding: 10px;
 	width: 300px;

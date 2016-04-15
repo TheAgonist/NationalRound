@@ -1,6 +1,7 @@
 require('rootpath')();
 var express = require('express');
 var app = express();
+var admin = express();
 var formidable = require('formidable');
 var session = require('express-session');
 var bodyParser = require('body-parser');
@@ -9,20 +10,21 @@ var config = require('config.json');
 var busboy = require('connect-busboy'); //middleware for form/file upload
 var path = require('path');     //used for file path
 var fs = require('fs-extra');       //File System - for file manipulation
-var uploadService = require('services/upload.service');
+var PlayService = require('services/play.service');
 
 app.use(busboy());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.set('view engine', 'ejs');
+//app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(busboy({defer: true}));
 app.use(bodyParser.json());
 app.use(session({ secret: config.secret, resave: false, saveUninitialized: true }));
-
+admin.use(session({ secret: config.secret, resave: false, saveUninitialized: true }));
 // use JWT auth to secure the api
 app.use('/api', expressJwt({ secret: config.secret }).unless({ path: ['/api/users/authenticate', '/api/play/getCurrentRecord', '/api/users/register','/api/upload/upload'] }));
+admin.use('/api', expressJwt({ secret: config.secret }).unless({ path: ['/api/users/authenticate', '/api/play/getCurrentRecord', '/api/users/register','/api/upload/upload'] }));
 
 // routes
 app.use('/login', require('./controllers/login.controller'));
@@ -30,9 +32,12 @@ app.use('/register', require('./controllers/register.controller'));
 app.use('/app', require('./controllers/app.controller'));
 app.use('/api/users', require('./controllers/api/users.controller'));
 app.use('/api/play', require('./controllers/api/play.controller'));
-app.use('/api/upload', require('./controllers/api/upload.controller'));
 app.use('/api/sheetMusic', require('./controllers/api/sheetMusic.controller'));
 app.use('/api/generator', require('./controllers/api/generator.controller'));
+
+
+app.use('/admin', require('./controllers/admin.controller'));
+admin.use('/login', require('./controllers/login.controller'));
 
 app.route('/upload')
     .post(function (req, res, next) {
@@ -52,9 +57,9 @@ app.route('/upload')
                     user: req.session.user,
                     show: -2,
                     votes: 0,
-                    delete: false,
+                    delete: 0,
                 };
-                uploadService.create(set);
+                PlayService.create(set);
                 res.redirect('http://localhost:3000/app/#/upload');           //where to go next
             });
         });

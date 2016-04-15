@@ -3,15 +3,18 @@
     angular
         .module('app')
         .controller('Upload.IndexController', Controller);
-    function Controller($window, UploadService, UserService) {
+    function Controller($window, PlayService, UserService) {
         initController();
         function initController(){
             UserService.GetCurrent().then(function (user) {
-                UploadService.getAll(user.name).then(function (records) {
-                for(var record in records){
-                    displayRecord(records[record]);
-                }
-            }); 
+                //console.log(user);
+                PlayService.getAllForUser(user.firstName).then(function (records) {
+                    for(var record in records){
+                        if(records[record].delete == 0){
+                            displayRecord(records[record]);
+                        }
+                    }
+                });
             });
         }
 
@@ -23,15 +26,28 @@
             var checkbox = createCheckBox(record);
             var third = document.createElement("TD");
             third.appendChild(checkbox);
+            var fourth = document.createElement("TD");
+            var deleteButton = createDeleteButton(record);
+            fourth.appendChild(deleteButton);
             var row = document.createElement("TR");
             row.id = "row";
             row.appendChild(first);
             row.appendChild(second);
             row.appendChild(third);
+            row.appendChild(fourth);
             var table = document.getElementById("listRecords");
             table.appendChild(row);
     	}
-    	function createCheckBox(record){
+    	function createDeleteButton(record){
+            var del = document.createElement("BUTTON");
+            del.id = "deleteButton";
+            del.onclick = function(){
+                PlayService.deleteRecord(record);
+            }
+            del.innerHTML = "delete";
+            return del;
+        }
+        function createCheckBox(record){
     		var checkbox = document.createElement('input');
 			checkbox.type = "checkbox";
 			checkbox.id = "checkbox";
@@ -46,7 +62,7 @@
     	}
 
     	function updateShow(record){
-    		UploadService.changeShowStatus(record);
+    		PlayService.changeShowStatus(record);
     	}
 	}
 })();

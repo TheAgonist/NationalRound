@@ -5,7 +5,10 @@ var router = express.Router();
 var playService = require('services/play.service');
 // routes
 router.get('/all', getAllRecords);
-router.put('/:_id', updateRecord);
+router.get('/:userName', getAllForUser);
+router.put('/delete', update);
+router.put('/:_id', update);
+router.put('/changeShowStatus',update);
 
 module.exports = router;
 function getAllRecords(req, res) {
@@ -22,9 +25,23 @@ function getAllRecords(req, res) {
         });
 }
 
-function updateRecord(req, res) {
-    var recordId = req.body._id;
-    playService.update(recordId, req.body)
+function getAllForUser(req, res){
+    //console.log(req.session.user);
+    playService.getAllRecordsForUser(req.session.user)
+    .then(function (records) {
+        if (records) {
+            res.send(records);
+        } else {
+            res.sendStatus(404);
+        }
+    })
+    .catch(function (err) {
+        res.status(400).send(err);
+    });
+}
+
+function update(req, res) {
+    playService.update(req)
         .then(function () {
             res.sendStatus(200);
         })

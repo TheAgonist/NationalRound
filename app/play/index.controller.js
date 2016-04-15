@@ -3,16 +3,22 @@
     angular
         .module('app')
         .controller('Play.IndexController', Controller);
-    function Controller(PlayService) {
+    function Controller(PlayService, UserService) {
         initController();
+        var curUser = this;
         function initController(){
             //display music files from database
             PlayService.getAll().then(function (records) {
                 var rank = 1;
-                for(var record in records){
-                    displayRecord(records[record], rank);
-                    rank++;
-                }
+                UserService.GetCurrent().then(function (user) {
+                    curUser = user;
+                    for(var record in records){
+                        if(records[record].delete == 0){
+                            displayRecord(records[record], rank);
+                            rank++;
+                        }
+                    }
+                });
             });
         }
 
@@ -26,14 +32,17 @@
             var fourth = document.createElement("TD");
             fourth.innerHTML = record.votes
             var fifth = document.createElement("TD");
-            var button = createUpvoteButton(record);
-            fifth.appendChild(button);
+            var upvote = createUpvoteButton(record);
+            fifth.appendChild(upvote);
             var sixth = document.createElement("TD");
-            var button = createPlayButton(record);
-            sixth.appendChild(button);
-            var seven = document.createElement("TD");
-            var button = createSheetButton(record);
-            sixth.appendChild(button);
+            var play = createPlayButton(record);
+            sixth.appendChild(play);
+            var seventh = document.createElement("TD");
+            var sheetButton = createSheetButton(record);
+            seventh.appendChild(sheetButton);
+            var delButton = createDeleteButton(record);
+            var eighth = document.createElement("TD");
+            eighth.appendChild(delButton);
             var row = document.createElement("TR");
             row.id = "row";
             row.appendChild(first);
@@ -42,9 +51,22 @@
             row.appendChild(fourth);
             row.appendChild(fifth);
             row.appendChild(sixth);
-            row.appendChild(seven);
+            row.appendChild(seventh);
+            if(curUser.role == "mod"){
+                row.appendChild(eighth);
+            }
             var table = document.getElementById("listRecords");
             table.appendChild(row);
+        }
+
+        function createDeleteButton(record){
+            var del = document.createElement("BUTTON");
+            del.id = "deleteButton";
+            del.onclick = function(){
+                PlayService.deleteRecord(record);
+            }
+            del.innerHTML = "delete";
+            return del;
         }
 
         function createSheetButton(record){
@@ -54,7 +76,6 @@
                 location.href ='./#/sheetMusic?bufferName='+record.name;
             };
             sheet.innerHTML = "Show sheet music";
-            //console.log(record);
             return sheet;
         }
 
@@ -65,7 +86,6 @@
                 upvoteFunc(record);
                  };
             upvote.innerHTML = "UPVOTE";
-            //console.log(record);
             return upvote;
             
         }
@@ -84,7 +104,6 @@
             audio.controls = true;
             var source = document.createElement("SOURCE");
             source.src = "http://localhost:3000/img/Night.mp3";
-            console.log(source.src);
             source.type = "audio/mpeg"
             audio.appendChild(source);
             var row = document.getElementById("row");

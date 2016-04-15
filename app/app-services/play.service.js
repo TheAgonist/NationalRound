@@ -8,28 +8,41 @@
     function Service($http, $q) {
         var service = {};
         service.getAll = getAll;
-	service.getBuffer = getBuffer;        
-	service.upvote = upvote;
+        service.getAllForUser = getAllForUser;
+    	service.getBuffer = getBuffer;        
+    	service.upvote = upvote;
+        service.deleteRecord = del;
+        service.changeShowStatus = changeShowStatus;
+        service.upload = upload;
         return service;
 
         function getAll() {
             return $http.get('/api/play/all').then(handleSuccess, handleError);
         }
-
-	function getBuffer(bufferName){
-            console.log(bufferName);
-            /*$http.get('/api/sheetMusic/'+bufferName).then(handleSuccess,handleError).then(function(song){
-                //console.log(song);
-                return song;
-            });*/
-            $http.get('/img/'+bufferName).then(handleSuccess,handleError);
-            //console.log(contra);
-            //return contra;
+        function getAllForUser(userName){
+            return $http.get('/api/play/'+userName).then(handleSuccess, handleError);
         }
 
+	    function getBuffer(bufferName){
+            $http.get('/img/'+bufferName).then(handleSuccess,handleError);
+        }
+        
+        function changeShowStatus(record){
+            return $http.put('/api/upload/changeShowStatus',record).then(handleSuccess, handleError);
+        }
+        
         function upvote(record){
             //console.log(record);
             return $http.put('/api/play/' + record._id,record).then(handleSuccess, handleError);
+        }
+
+        function upload(record){
+            return $http.post('/api/upload/post',record).then(handleSuccess, handleError);
+        }
+
+        function del(record){
+            console.log(record);
+            return $http.put('/api/play/delete',record).then(handleSuccess,handleError);
         }
 
         function handleSuccess(res) {
